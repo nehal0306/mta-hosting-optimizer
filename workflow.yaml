@@ -1,0 +1,28 @@
+name: Test and Build
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: latest
+
+    - name: Test
+      run: |
+        go test -coverprofile=coverage.out
+        go tool cover -func=coverage.out
+
+    - name: Build
+      run: |
+        go build
